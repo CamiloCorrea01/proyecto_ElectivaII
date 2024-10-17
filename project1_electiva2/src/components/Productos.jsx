@@ -63,6 +63,7 @@ const Productos = ({ token }) => {
         {productosFiltrados.map((producto) => (
           <div key={producto._id} className="producto-card">
             <h3>{producto.name}</h3>
+            <p>ID: {producto._id}</p> {/* Muestra el ID del producto */}
             <p>{producto.description}</p>
             <p className="producto-precio">${producto.value}</p>
             <div className="producto-actions">
