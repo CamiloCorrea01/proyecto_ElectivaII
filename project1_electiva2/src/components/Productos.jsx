@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import '../style/Productos.css';
@@ -7,8 +7,11 @@ const Productos = ({ token }) => {
   const [productos, setProductos] = useState([]);
   const [busqueda, setBusqueda] = useState('');
 
-  // Memoiza fetchProductos con useCallback
-  const fetchProductos = useCallback(async () => {
+  useEffect(() => {
+    fetchProductos();
+  }, []);
+
+  const fetchProductos = async () => {
     try {
       const response = await axios.get('https://api-nodejs-da74.onrender.com/products', {
         headers: { Authorization: `Bearer ${token}` },
@@ -17,18 +20,14 @@ const Productos = ({ token }) => {
     } catch (error) {
       console.error('Error al obtener productos:', error);
     }
-  }, [token]); // Dependencia de token
-
-  useEffect(() => {
-    fetchProductos();
-  }, [fetchProductos]); // Incluye fetchProductos como dependencia
+  };
 
   const eliminarProducto = async (id) => {
     try {
       await axios.delete(`https://api-nodejs-da74.onrender.com/products/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      fetchProductos(); // Vuelve a obtener los productos después de eliminar
+      fetchProductos();
     } catch (error) {
       console.error('Error al eliminar producto:', error);
     }
