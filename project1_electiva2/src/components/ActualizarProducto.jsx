@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -7,11 +7,8 @@ const ActualizarProducto = ({ token }) => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchProducto();
-  }, []);
-
-  const fetchProducto = async () => {
+  // Memoiza la función fetchProducto para que su referencia no cambie en cada renderizado
+  const fetchProducto = useCallback(async () => {
     try {
       const response = await axios.get(`https://api-nodejs-da74.onrender.com/products/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -20,7 +17,11 @@ const ActualizarProducto = ({ token }) => {
     } catch (error) {
       console.error('Error al obtener producto:', error);
     }
-  };
+  }, [id, token]); // Dependencias de fetchProducto: id y token
+
+  useEffect(() => {
+    fetchProducto();
+  }, [fetchProducto]); // Añadir fetchProducto como dependencia
 
   const actualizarProducto = async () => {
     try {
