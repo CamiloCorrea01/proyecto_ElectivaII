@@ -54,7 +54,7 @@ const Productos = ({ token }) => {
           />
         </div>
         
-        <Link to="/agregar" className="add-button">
+        <Link to="/productos/agregar" className="add-button">
           Agregar Producto
         </Link>
       </div>
